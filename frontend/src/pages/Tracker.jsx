@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom'; // Add this import
 
 // COMPONENTS
 import AddFoodForm from "../components/AddFoodForm";
@@ -38,6 +39,9 @@ function Tracker() {
     const saved = localStorage.getItem('thaliSettings');
     return saved ? JSON.parse(saved) : { calorieGoal: 2000, proteinGoal: 60, budgetLimit: 500, bodyWeight: 60 };
   });
+
+  // Inside Tracker component:
+const navigate = useNavigate();//Profile Page 
 
   useEffect(() => {
     localStorage.setItem('thaliSettings', JSON.stringify(userSettings));
@@ -94,6 +98,13 @@ function Tracker() {
         
         {/* HEADER */}
         <header className="flex justify-between items-center mb-6">
+            <div 
+             onClick={() => navigate('/profile')} // <--- CLICK TO GO TO PROFILE
+             className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold border border-orange-200 cursor-pointer hover:bg-orange-200" 
+  t            itle="My Profile"
+            >
+                {user.name.charAt(0).toUpperCase()}
+            </div>
           <div>
             <h1 className="text-2xl font-extrabold text-orange-600 tracking-tight">🍛 ThaliTrack</h1>
             <p className="text-gray-500 text-xs font-medium">Desi Nutrition & Budget</p>

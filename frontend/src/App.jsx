@@ -9,6 +9,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import Verify from "./pages/Verify";
 import Tracker from "./pages/Tracker"; // This is your old App code
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile";
+import Reports from "./pages/Reports";
 
 // Protected Route Component
 const PrivateRoute = ({ children }) => {
@@ -26,6 +30,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
+          <Route path="reset-password" element={<ResetPassword/>}/>
+          <Route path="/profile" element={ <PrivateRoute> <Profile /></PrivateRoute>}/>
+          <Route path="/reports" element={<PrivateRoute><Reports/></PrivateRoute>}/>
 
           {/* Protected Routes (Only for Logged in Users) */}
           <Route 
