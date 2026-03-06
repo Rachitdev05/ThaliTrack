@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast';
 
 // PAGES
 import Login from "./pages/Login";
-import Signup from "./pages/SignUp";
+import Signup from "./pages/Signup";
 import Verify from "./pages/Verify";
 import Tracker from "./pages/Tracker"; // This is your old App code
 import ForgotPassword from "./pages/ForgotPassword";
