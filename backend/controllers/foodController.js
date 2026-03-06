@@ -1,45 +1,49 @@
 import Food from '../models/foodModel.js';
 
-// @desc    Get foods (Single Date OR Date Range)
+// @desc    Get foods (Strict Date Filtering)
 // @route   GET /api/foods?date=YYYY-MM-DD
-// @route   GET /api/foods?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 export const getFoods = async (req, res) => {
     try {
+        // 1. Get the Current User's ID (From the auth middleware)
+        // If you haven't added auth yet, remove "user: req.user.id"
+        // But based on our progress, you likely need this:
+        const userId = req.user ? req.user.id : null; 
+
         let query = {};
+        
+        // If using Auth, ensure we only fetch THIS user's food
+        if (userId) {
+            query.user = userId;
+        }
 
-        // OPTION 1: Date Range (For Weekly Trends)
-        if (req.query.startDate && req.query.endDate) {
-            const start = new Date(req.query.startDate);
-            start.setHours(0, 0, 0, 0); // Start of first day
+        // 2. Date Filtering Logic
+        if (req.query.date) {
+            // Create a date object from the string (e.g., "2026-02-28")
+            const dateString = req.query.date;
+            
+            // Construct Start of Day (00:00:00)
+            const startOfDay = new Date(dateString);
+            startOfDay.setHours(0, 0, 0, 0);
 
-            const end = new Date(req.query.endDate);
-            end.setHours(23, 59, 59, 999); // End of last day
+            // Construct End of Day (23:59:59)
+            const endOfDay = new Date(dateString);
+            endOfDay.setHours(23, 59, 59, 999);
 
-            query = {
-                createdAt: {
-                    $gte: start,
-                    $lte: end
-                }
-            };
-        } 
-        // OPTION 2: Single Date (For Daily Diary)
-        else if (req.query.date) {
-            const selectedDate = new Date(req.query.date);
-            const startOfDay = new Date(selectedDate.setHours(0, 0, 0, 0));
-            const endOfDay = new Date(selectedDate.setHours(23, 59, 59, 999));
-
-            query = {
-                createdAt: {
-                    $gte: startOfDay,
-                    $lte: endOfDay
-                }
+            // Add date filter to the query
+            query.createdAt = {
+                $gte: startOfDay, // Greater than or equal to 00:00
+                $lte: endOfDay    // Less than or equal to 23:59
             };
         }
 
-        const foods = await Food.find({ user: req.user.id }).sort({ createdAt: 1 }); // Sort Oldest to Newest for charts
+        // 3. Fetch from Database
+        const foods = await Food.find(query).sort({ createdAt: -1 });
+        
         res.json(foods);
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error("Error in getFoods:", error);
+        res.status(500).json({ message: "Server Error fetching foods" });
     }
 };
 

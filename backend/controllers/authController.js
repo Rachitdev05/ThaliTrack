@@ -76,13 +76,14 @@ export const loginUser = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+         if (user && (await bcrypt.compare(password, user.password))) {
             if (!user.isVerified) return res.status(401).json({ message: 'Please verify email first' });
 
             res.json({
                 _id: user.id,
                 name: user.name,
                 email: user.email,
+                isAdmin: user.isAdmin, // <--- SEND THIS TO FRONTEND
                 token: generateToken(user.id)
             });
         } else {

@@ -1,0 +1,20 @@
+# --- Universal ---
+node_modules/
+.DS_Store
+Thumbs.db
+
+# --- Security (NEVER UPLOAD THESE) ---
+.env
+backend/.env
+frontend/.env
+
+# --- Backend Specific ---
+backend/node_modules/
+backend/logs/
+backend/*.log
+
+# --- Frontend Specific ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/

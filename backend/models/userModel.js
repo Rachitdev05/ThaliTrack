@@ -5,6 +5,9 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false }, // False until OTP verified
+     // --- NEW FIELD ---
+    isAdmin: { type: Boolean, default: false, required: true }, 
+    // ----------------
     otp: { type: String },
     otpExpires: { type: Date },
     // We can store weight/water goals here later

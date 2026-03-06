@@ -67,6 +67,26 @@ const Profile = () => {
 
       {/* 3. MENU OPTIONS */}
       <div className="max-w-md mx-auto px-6 mt-6 space-y-3">
+         
+        {/* --- NEW: ADMIN DASHBOARD BUTTON (Only visible if user.isAdmin is true) --- */}
+        {user?.isAdmin && (
+            <div 
+                onClick={() => navigate('/admin-feedback')} 
+                className="bg-gradient-to-r from-orange-500 to-red-500 p-4 rounded-xl shadow-md border border-orange-600 flex items-center justify-between cursor-pointer hover:shadow-lg transition group transform hover:-translate-y-1"
+            >
+                <div className="flex items-center gap-4">
+                    <div className="p-2 bg-white/20 text-white rounded-lg">
+                        👑
+                    </div>
+                    <div>
+                        <h3 className="font-extrabold text-white">Admin Dashboard</h3>
+                        <p className="text-xs text-orange-100">Manage Feedback & Users</p>
+                    </div>
+                </div>
+                <span className="text-white font-bold">→</span>
+            </div>
+        )}
+        {/* ------------------------------------------------------------------------- */}
         
         {/* Reports Button */}
         <div 
@@ -80,6 +100,23 @@ const Profile = () => {
                 <div>
                     <h3 className="font-bold text-gray-700">Reports & Analysis</h3>
                     <p className="text-xs text-gray-400">View your weekly progress</p>
+                </div>
+            </div>
+            <span className="text-gray-300 group-hover:text-orange-500">→</span>
+        </div>
+
+        {/* Feedback Button */}
+        <div 
+            onClick={() => navigate('/feedback')} 
+            className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between cursor-pointer hover:bg-orange-50 transition group mt-3"
+        >
+            <div className="flex items-center gap-4">
+                <div className="p-2 bg-purple-100 text-purple-600 rounded-lg group-hover:bg-white group-hover:shadow-sm transition">
+                    💌
+                </div>
+                <div>
+                    <h3 className="font-bold text-gray-700">Feedback & Support</h3>
+                    <p className="text-xs text-gray-400">Found a bug? Tell us!</p>
                 </div>
             </div>
             <span className="text-gray-300 group-hover:text-orange-500">→</span>

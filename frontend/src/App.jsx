@@ -13,6 +13,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Reports from "./pages/Reports";
+import Feedback from "./pages/Feedback";
+import AdminFeedback from "./pages/AdminFeedback";
 
 // Protected Route Component
 const PrivateRoute = ({ children }) => {
@@ -34,6 +36,8 @@ function App() {
           <Route path="reset-password" element={<ResetPassword/>}/>
           <Route path="/profile" element={ <PrivateRoute> <Profile /></PrivateRoute>}/>
           <Route path="/reports" element={<PrivateRoute><Reports/></PrivateRoute>}/>
+          <Route path="/feedback" element={<PrivateRoute><Feedback/></PrivateRoute>}/>
+          <Route path="/admin-feedback" element={<AdminFeedback />} />
 
           {/* Protected Routes (Only for Logged in Users) */}
           <Route 

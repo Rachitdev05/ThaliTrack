@@ -16,6 +16,8 @@ import SummaryHeader from "../components/SummaryHeader";
 import MealSection from "../components/MealSection";
 import WaterTracker from "../components/WaterTracker";
 import WeeklyTrends from "../components/WeeklyTrends"; // Assuming you added this earlier
+import FutureSelf from '../components/FutureSelf';
+
 
 function Tracker() {
       const { user, logout } = useContext(AuthContext);
@@ -137,10 +139,18 @@ const navigate = useNavigate();//Profile Page
 
         {/* TABS */}
         <div className="flex justify-center mb-8">
-            <div className="flex bg-gray-200 rounded-full p-1 gap-1">
+            <div className="flex bg-gray-200 rounded-full p-1 gap-1 overflow-x-auto">
                 <button onClick={() => setActiveTab('tracker')} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeTab === 'tracker' ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Diary</button>
                 <button onClick={() => setActiveTab('diet')} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeTab === 'diet' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Diet Plans</button>
                 <button onClick={() => setActiveTab('workout')} className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeTab === 'workout' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Workouts</button>
+                  
+                {/* --- NEW TAB ICON --- */}
+                <button 
+                    onClick={() => setActiveTab('future')}
+                    className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1 ${activeTab === 'future' ? 'bg-white text-purple-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                    <span>🔮</span> Future AI
+                </button>
             </div>
         </div>
 
@@ -220,6 +230,17 @@ const navigate = useNavigate();//Profile Page
 
         {activeTab === 'diet' && <DietGuide />}
         {activeTab === 'workout' && <WorkoutGuide />}
+
+        {/* ================= NEW VIEW: FUTURE SELF AI ================= */}
+        {activeTab === 'future' && (
+            <div className="animate-fade-in">
+                <div className="text-center mb-6">
+                    <h2 className="text-2xl font-extrabold text-purple-700">Time Travel ⏳</h2>
+                    <p className="text-gray-500 text-sm">See the results of your hard work before they happen.</p>
+                </div>
+                <FutureSelf userSettings={userSettings} />
+            </div>
+        )}
 
       </div>
 
