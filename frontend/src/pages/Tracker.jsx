@@ -98,43 +98,74 @@ const navigate = useNavigate();//Profile Page
 
       <div className="max-w-3xl mx-auto p-4 md:p-6">
         
-        {/* HEADER */}
-        <header className="flex justify-between items-center mb-6">
-            <div 
-             onClick={() => navigate('/profile')} // <--- CLICK TO GO TO PROFILE
-             className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold border border-orange-200 cursor-pointer hover:bg-orange-200" 
-  t            itle="My Profile"
-            >
-                {user.name.charAt(0).toUpperCase()}
+        {/* ================= IMPROVED RESPONSIVE HEADER ================= */}
+        <header className="mb-6">
+          
+          {/* TOP ROW: Logo & Profile (Mobile: Spaced apart, Desktop: Grouped) */}
+          <div className="flex justify-between items-center">
+            
+            {/* BRANDING */}
+            <div className="flex items-center gap-3">
+                {/* Profile Avatar (Click to go to Profile/Logout) */}
+                <div 
+                    onClick={() => navigate('/profile')} 
+                    className="w-10 h-10 rounded-full bg-gradient-to-tr from-orange-400 to-red-500 text-white flex items-center justify-center font-bold shadow-md cursor-pointer hover:scale-105 transition-transform" 
+                    title="My Profile"
+                >
+                    {user?.name?.charAt(0).toUpperCase()}
+                </div>
+
+                <div>
+                    <h1 className="text-xl md:text-2xl font-extrabold text-gray-800 tracking-tight leading-tight">
+                        ThaliTrack
+                    </h1>
+                    <p className="text-[10px] md:text-xs text-gray-500 font-medium hidden md:block">
+                        Desi Nutrition & Budget
+                    </p>
+                </div>
             </div>
-          <div>
-            <h1 className="text-2xl font-extrabold text-orange-600 tracking-tight">🍛 ThaliTrack</h1>
-            <p className="text-gray-500 text-xs font-medium">Desi Nutrition & Budget</p>
+
+            {/* DESKTOP CONTROLS (Hidden on Mobile) */}
+            <div className="hidden md:flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
+                    <span className="text-gray-400 text-sm">📅</span>
+                    <input 
+                        type="date" 
+                        value={selectedDate}
+                        onChange={(e) => setSelectedDate(e.target.value)}
+                        className="outline-none text-gray-700 font-bold text-sm bg-transparent cursor-pointer"
+                    />
+                </div>
+                <button 
+                    onClick={() => setShowSettings(true)}
+                    className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition shadow-sm text-gray-600"
+                >
+                    ⚙️
+                </button>
+            </div>
+
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
-              <span className="text-gray-400 text-sm">📅</span>
-              <input 
-                type="date" 
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="outline-none text-gray-700 font-bold text-sm bg-transparent"
-              />
-            </div>
-            
-            <button 
-              onClick={() => setShowSettings(true)}
-              className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition shadow-sm text-gray-600"
-            >
-              ⚙️
-            </button>
-            
-   {/* Logout */}
-   <button onClick={logout} className="text-xs text-red-500 font-bold hover:underline ml-2">
-      Logout
-   </button>
+          {/* MOBILE CONTROLS (Visible ONLY on Mobile) */}
+          {/* This puts the date picker on a second row for phones, giving it space */}
+          <div className="mt-4 md:hidden flex justify-between items-center gap-2">
+             <div className="flex-1 flex items-center gap-2 bg-white px-4 py-3 rounded-xl border border-gray-200 shadow-sm">
+                <span className="text-gray-400 text-sm">📅</span>
+                <input 
+                    type="date" 
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="outline-none text-gray-700 font-bold text-sm bg-transparent w-full"
+                />
+             </div>
+             <button 
+                onClick={() => setShowSettings(true)}
+                className="p-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-gray-600 shadow-sm"
+             >
+                ⚙️
+             </button>
           </div>
+
         </header>
 
         {/* TABS */}
