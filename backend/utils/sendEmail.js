@@ -1,32 +1,22 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const sendEmail = async (options) => {
     try {
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true, // Use SSL
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            // 👇 THIS IS THE ABSOLUTE FIX FOR RENDER 👇
-            // It strictly forces Nodemailer to use IPv4 instead of IPv6
-            family: 4 
-        });
+        // 👇 MOVED INSIDE THE FUNCTION 👇
+        // This guarantees process.env is loaded before it tries to read the key
+        const resend = new Resend(process.env.RESEND_API_KEY);
 
-        const mailOptions = {
-            from: `"ThaliTrack Support" <${process.env.EMAIL_USER}>`,
-            to: options.email,
+        const data = await resend.emails.send({
+            from: 'ThaliTrack <onboarding@resend.dev>', // Resend testing email
+            to: options.email, 
             subject: options.subject,
             html: options.message
-        };
+        });
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent successfully: " + info.response); 
+        console.log("✅ API Email sent successfully:", data); 
     } catch (error) {
-        console.error("❌ Email Error Details:", error); 
-        throw new Error("Email sending failed");
+        console.error("❌ API Email Error:", error); 
+        throw new Error("Email API failed");
     }
 };
 
