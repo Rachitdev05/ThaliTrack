@@ -1,9 +1,4 @@
 import nodemailer from 'nodemailer';
-import dns from 'dns';
-
-// 🛑 THIS IS THE MAGIC FIX FOR RENDER 🛑
-// It forces the server to use standard IPv4 networks, bypassing the IPv6 timeout bug.
-dns.setDefaultResultOrder('ipv4first');
 
 const sendEmail = async (options) => {
     try {
@@ -15,10 +10,9 @@ const sendEmail = async (options) => {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             },
-            tls: {
-                // Do not fail on invalid certs
-                rejectUnauthorized: false
-            }
+            // 👇 THIS IS THE ABSOLUTE FIX FOR RENDER 👇
+            // It strictly forces Nodemailer to use IPv4 instead of IPv6
+            family: 4 
         });
 
         const mailOptions = {
