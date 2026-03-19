@@ -49,14 +49,14 @@ export const getFoods = async (req, res) => {
 
 // @desc    Add a new food item
 // @route   POST /api/foods
-// @access  Public
-
+// @access  Private (Requires Token)
 export const createFood = async (req, res) => {
     try {
-        const {name , calories , protein, carbs, fat, portionSize, approxCost, category} = req.body;
+        const { name, calories, protein, carbs, fat, portionSize, approxCost, category } = req.body;
 
-        //create a new food item in memory
-        const food = new Food({
+        // Create the food and ATTACH THE USER ID
+        const food = await Food.create({
+            user: req.user._id, // <--- THIS IS THE CRITICAL LINE!
             name,
             calories,
             protein,
@@ -65,15 +65,14 @@ export const createFood = async (req, res) => {
             portionSize,
             approxCost,
             category
-        })
+        });
 
-        //Save it to Database
-        const createFood = await Food.create({ ...req.body, user: req.user.id });
-        res.status(201).json(createFood)
+        res.status(201).json(food);
     } catch (error) {
-         res.status(400).json({ message: error.message });
+        // This catches Mongoose validation errors
+        res.status(400).json({ message: error.message });
     }
-}
+};
     // @desc    Delete a food item
 // @route   DELETE /api/foods/:id
 // @access  Public
