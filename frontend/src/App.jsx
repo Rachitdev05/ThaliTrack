@@ -18,10 +18,22 @@ import AdminFeedback from "./pages/AdminFeedback";
 
 // Protected Route Component
 const PrivateRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
-  return user ? children : <Navigate to="/login" />;
-};
+  // WE NOW EXTRACT 'loading' FROM CONTEXT
+  const { user, loading } = useContext(AuthContext); 
 
+  // If Context is still checking local storage, show a blank screen or spinner
+  // Do NOT redirect yet!
+  if (loading) {
+      return (
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <p className="text-gray-400 animate-pulse font-bold">Loading ThaliTrack...</p>
+          </div>
+      );
+  }
+
+  // Once loading is false, THEN check if user exists
+  return user ? children : <Navigate to="/login" replace />;
+};
 function App() {
   return (
     <AuthProvider>
